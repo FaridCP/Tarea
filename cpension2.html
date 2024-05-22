@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de pensión</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center h-screen" style="background-image: url(wallpaper.jpg); background-size: cover; background-position: center;">
+    <main class="bg-gray-100 w-120 mx-auto rounded">
+        <h1 class="text-center text-2xl pt-5  pb-3">SIMULADOR DE PENSIÓN</h1>
+        
+        <div class="grid grid-cols-2 p-3 gap-3">
+            <div class="grid grid-cols-2 p-3">
+                <h1 class="text-black">Hombre:</h1>
+                <input id="sexoHombre" class="inputSexo" type="checkbox" onclick="toggleCheckbox('sexoHombre', 'sexoMujer')">
+            </div>
+            <div class="grid grid-cols-2 p-3 ">
+                <h1 class="text-black">Mujer:</h1>
+                <input id="sexoMujer" class="inputSexo" type="checkbox" onclick="toggleCheckbox('sexoMujer', 'sexoHombre')">
+            </div>
+        </div>
+
+        <div class="p-3 items-center rounded ">
+            <h1 class="text-1xl text-black pb-2">Indica tu edad:</h1>
+            <input id="inputEdad" type="text" class="inputEdad border-2 border-gray-500 rounded">
+        </div>
+
+        <div class="grid grid-cols-2 gap-4 p-3">
+            <div>
+                <h1 class="text-1xl text-black pb-2">Ingreso Mensual:</h1>
+                <input id="inputSueldo" type="text" class="inputSueldo border-2 border-gray-500 rounded">
+            </div>
+            <div>
+                <h1 class="text-1xl text-black pb-2">Saldo actual en tu fondo:</h1>
+                <input id="inputSaldo" type="text" class="inputSaldo border-2 border-gray-500 rounded">
+            </div>
+        </div>
+        
+        
+        <div class="p-4">
+            <button onclick="calcularPension()" class="bg-orange-500 text-white text-center p-1.5 rounded hover:scale-105 border border-orange-600">Calcular pensión</button>
+        </div>
+    </main>
+    <script>
+        const tasa = 0.6;
+
+        function toggleCheckbox(idToCheck, idToUncheck) {
+            document.getElementById(idToCheck).checked = true;
+            document.getElementById(idToUncheck).checked = false;
+        }
+
+        function calcularPension() {
+            let edad = parseInt(document.getElementById('inputEdad').value);
+            let sueldo = parseFloat(document.getElementById('inputSueldo').value);
+            let saldo = parseFloat(document.getElementById('inputSaldo').value);
+
+            if (isNaN(edad) || isNaN(sueldo) || isNaN(saldo)) {
+                console.log("Por favor, ingrese valores válidos.");
+                return;
+            }
+
+            function pensionEstimada(edad, sueldo) {
+            return (sueldo * edad * tasa) / 12;
+            }
+
+            function fondoEstimado(edad, sueldo, saldo) {
+                return (edad * (sueldo + saldo));
+            }
+
+            let nuevaPension = pensionEstimada(edad, sueldo);
+            let saldoActual = fondoEstimado(edad, sueldo, saldo);
+
+            console.log("La pensión estimada es:" + nuevaPension);
+            console.log("El saldo actual estimado es:"+ saldoActual);
+        }
+
+    </script>
+</body>
+</html>
